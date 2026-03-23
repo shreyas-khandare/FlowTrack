@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from app.database import engine, Base
-from app.routes import user, task
+from database import engine, Base
+from routes import user, task
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -9,7 +9,10 @@ Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # frontend URL
+    allow_origins=[
+        "http://localhost:5173",
+        "https://your-frontend-url.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

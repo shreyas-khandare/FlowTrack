@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app import models, schemas
-from app.database import get_db
-from app.utils.auth import get_current_user
+import models, schemas
+from database import get_db
+from utils.auth import get_current_user
 
 router = APIRouter()
+
 
 @router.post("/tasks")
 def create_task(
@@ -23,6 +24,7 @@ def create_task(
 
     return new_task
 
+
 @router.get("/tasks")
 def get_tasks(
     db: Session = Depends(get_db),
@@ -31,6 +33,7 @@ def get_tasks(
     return db.query(models.Task).filter(
         models.Task.owner_id == user["user_id"]
     ).all()
+
 
 @router.put("/tasks/{task_id}")
 def update_task(
@@ -54,6 +57,7 @@ def update_task(
 
     return db_task
 
+
 @router.delete("/tasks/{task_id}")
 def delete_task(
     task_id: int,
@@ -72,4 +76,3 @@ def delete_task(
     db.commit()
 
     return {"message": "Task deleted"}
-# Routes define API endpoints using APIRouter.
