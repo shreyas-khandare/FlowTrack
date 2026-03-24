@@ -5,18 +5,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-    "http://localhost:5173",
-    "https://flow-track-bice.vercel.app"
-],
+    allow_origins=["*"],  # TEMP: ensure it works
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def root():
